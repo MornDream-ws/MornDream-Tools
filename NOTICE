@@ -1,0 +1,20 @@
+MornDream-Tools
+Copyright 2026 MornDream-Tools contributors
+Licensed under the GNU General Public License, version 3 (GPL-3.0-only).
+
+IT-Tools by Corentin Thomasset and contributors
+https://github.com/CorentinTh/it-tools
+Licensed under GPL-3.0. This project uses the tool organization and interaction
+concepts as references for its unified quick-tool implementation.
+
+CyberChef-Chinese by shadowhunter1024 and contributors
+https://github.com/shadowhunter1024/CyberChef-Chinese
+Based on CyberChef by GCHQ and contributors, Crown Copyright.
+https://github.com/gchq/CyberChef
+Licensed under Apache License 2.0; retained in vendor/cyberchef/LICENSE.
+Source headers, translations, dependency notices and original documentation
+remain with the vendored source. MornDream integration adapters, worker entry
+and build scripts are maintained outside the vendored source.
+
+Exact source revisions are recorded in upstream-sources.json.
+Third-party packages retain their respective licenses.

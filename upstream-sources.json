@@ -1,0 +1,17 @@
+{
+  "it-tools": {
+    "repository": "https://github.com/CorentinTh/it-tools",
+    "branch": "main",
+    "commit": "d505845f918e946ec300af7b36efc107e2f66e9e",
+    "license": "GPL-3.0-only",
+    "integration": "Tool taxonomy and interaction references; unified implementation of the 20 tools in the approved prototype"
+  },
+  "cyberchef-chinese": {
+    "repository": "https://github.com/shadowhunter1024/CyberChef-Chinese",
+    "branch": "zh-CN",
+    "commit": "065bcb08f5b6b23452cd0443cb9a83c677cfd984",
+    "license": "Apache-2.0",
+    "path": "vendor/cyberchef",
+    "integration": "Vendored original source, native Chef engine, operation metadata, Chinese translation, and complete original workbench"
+  }
+}

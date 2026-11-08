@@ -1,0 +1,13 @@
+node_modules/
+dist/
+artifacts/
+vendor/cyberchef/build/
+vendor/cyberchef/node_modules/
+vendor/cyberchef/src/core/config/OperationConfig.json
+vendor/cyberchef/src/core/config/modules/
+vendor/cyberchef/src/node/index.mjs
+.openai/
+.env
+.env.*
+*.pem
+*.key

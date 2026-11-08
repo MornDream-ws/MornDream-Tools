@@ -1,0 +1,1 @@
+{"code":200,"message":"success","data":[{"id":1001,"name":"Alice","role":"researcher","email":"alice@example.com"},{"id":1002,"name":"Bob","role":"developer","email":"bob@example.com"}],"meta":{"source":"同源静态示例文件","page":1,"total":2}}

@@ -1,0 +1,16 @@
+import {spawnSync} from 'node:child_process';
+import {existsSync} from 'node:fs';
+import {cp,mkdir,readdir,writeFile} from 'node:fs/promises';
+const run=(command,args,cwd=process.cwd())=>{const result=spawnSync(command,args,{cwd,stdio:'inherit',shell:process.platform==='win32'});if(result.status!==0)process.exit(result.status||1);};
+if(!existsSync('vendor/cyberchef/node_modules'))run('npm',['ci','--no-audit','--no-fund'],'vendor/cyberchef');
+if(!existsSync('vendor/cyberchef/build/prod/index.html'))run('npm',['run','build'],'vendor/cyberchef');
+if(!existsSync('vendor/cyberchef/build/runtime/ChefWorker.js'))run('node',['scripts/build-chef-worker.cjs']);
+run('node',['scripts/build-sdk.mjs']);run('npm',['run','build:web']);
+await mkdir('dist/cyberchef',{recursive:true});
+await cp('vendor/cyberchef/build/prod','dist/cyberchef',{recursive:true,filter:source=>!/(\.gz|\.br|\.zip)$|BundleAnalyzerReport/.test(source)});
+await cp('vendor/cyberchef/build/runtime','dist/cyberchef',{recursive:true,filter:source=>!/(\.gz|\.br)$/.test(source)});
+await cp('apps/web/examples','dist/examples',{recursive:true});
+await cp('LICENSE','dist/LICENSE');await cp('NOTICE','dist/NOTICE');await cp('vendor/cyberchef/LICENSE','dist/cyberchef/LICENSE');await cp('upstream-sources.json','dist/upstream-sources.json');await writeFile('dist/.nojekyll','');
+const {catalog,operations}=await import('../packages/sdk/dist/index.js');
+await mkdir('dist/api/v1',{recursive:true});await writeFile('dist/api/v1/catalog.json',JSON.stringify({version:'1.0.0',tools:catalog,operations}));
+console.log('Static website, SDK and discoverable catalog built.');

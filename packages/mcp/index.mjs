@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
+import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
+import {z} from 'zod';
+import * as sdk from '../sdk/dist/index.js';
+const server=new McpServer({name:'MornDream-Tools',version:'1.0.0'});
+const allowNetwork=process.argv.includes('--allow-network');
+const response=value=>({content:[{type:'text',text:JSON.stringify(value)}],structuredContent:Array.isArray(value)?{items:value}:value,isError:value?.ok===false});
+const data=z.object({type:z.enum(['text','bytes']),value:z.string(),encoding:z.literal('base64').optional()});
+const recipe=z.array(z.object({op:z.string(),args:z.array(z.unknown()),disabled:z.boolean().optional(),breakpoint:z.boolean().optional()}));
+server.registerTool('tools_search',{description:'查找工具及简短说明；先搜索，再 describe 获取完整参数。',inputSchema:{query:z.string().default(''),limit:z.number().int().min(1).max(100).default(20)},annotations:{readOnlyHint:true,destructiveHint:false}},async args=>response({items:sdk.tools.search(args)}));
+server.registerTool('tools_describe',{description:'获取工具输入输出 JSON Schema、参数和运行环境。',inputSchema:{toolId:z.string()},annotations:{readOnlyHint:true,destructiveHint:false}},async args=>response(sdk.tools.describe(args.toolId)||{ok:false,error:{code:'TOOL_NOT_FOUND',message:'未知工具'}}));
+server.registerTool('tools_run',{description:'执行本地纯数据工具；结果为结构化数据。',inputSchema:{toolId:z.string(),input:data,params:z.record(z.unknown()).optional()},annotations:{readOnlyHint:true,destructiveHint:false}},async(args,extra)=>response(await sdk.tools.run(args,{signal:extra.signal})));
+server.registerTool('recipes_operations',{description:'搜索 CyberChef 操作与原生参数定义。',inputSchema:{query:z.string().default(''),limit:z.number().int().min(1).max(100).default(20)},annotations:{readOnlyHint:true}},async args=>response({items:sdk.recipes.operations(args)}));
+for(const [name,description]of [['recipes_validate','检查原生 CyberChef 配方，不执行。'],['recipes_run','执行原生 CyberChef 配方，默认禁止网络操作。']])server.registerTool(name,{description,inputSchema:{input:data,recipe},annotations:{readOnlyHint:name==='recipes_validate',openWorldHint:name==='recipes_run'}},async(args,extra)=>response(name==='recipes_validate'?sdk.recipes.validate(args,{allowNetwork}):await sdk.recipes.run(args,{allowNetwork,signal:extra.signal,timeoutMs:30000})));
+for(const [name,description]of [['http_prepare','解析和验证 HTTP 请求，不发送。'],['http_send','实际发送 HTTP 请求，可能修改远端数据；需以 --allow-network 启动。']])server.registerTool(name,{description,inputSchema:{request:z.record(z.unknown()),environment:z.record(z.string()).optional()},annotations:{readOnlyHint:name==='http_prepare',destructiveHint:name==='http_send',openWorldHint:true}},async(args,extra)=>response(name==='http_prepare'?sdk.http.prepare(args.request,args.environment):await sdk.http.send(args.request,args.environment,{allowNetwork,signal:extra.signal})));
+server.registerTool('workspace_import',{description:'解析、验证或迁移工作区 JSON，只返回数据，不访问浏览器或写文件。',inputSchema:{workspace:z.record(z.unknown())},annotations:{readOnlyHint:true,destructiveHint:false}},async args=>{try{return response(sdk.workspace.import(args.workspace));}catch(e){return response({ok:false,error:{code:'INVALID_WORKSPACE',message:e.message}});}});
+server.registerTool('workspace_export',{description:'导出版本化工作区 JSON，清除请求和环境中的明文凭据。',inputSchema:{workspace:z.record(z.unknown())},annotations:{readOnlyHint:true,destructiveHint:false}},async args=>{try{return response({json:sdk.workspace.export(args.workspace)});}catch(e){return response({ok:false,error:{code:'INVALID_WORKSPACE',message:e.message}});}});
+await server.connect(new StdioServerTransport());

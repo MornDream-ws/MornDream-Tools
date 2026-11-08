@@ -1,0 +1,41 @@
+{
+  "name": "morndream-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "workspaces": [
+    "packages/sdk"
+  ],
+  "engines": {
+    "node": ">=24 <27"
+  },
+  "scripts": {
+    "dev": "vite preview apps/web --outDir ../../dist --host 0.0.0.0",
+    "build": "node scripts/build.mjs",
+    "build:web": "vite build apps/web --outDir ../../dist --emptyOutDir --base ./",
+    "build:sdk": "node scripts/build-sdk.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "cli": "node packages/cli/index.mjs",
+    "mcp": "node packages/mcp/index.mjs",
+    "develop": "vite apps/web --host 0.0.0.0"
+  },
+  "dependencies": {
+    "vue": "^3.5.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.25.0",
+    "ajv": "^8.17.1",
+    "json5": "^2.2.3"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "typescript": "^5.8.0",
+    "esbuild": "^0.25.0",
+    "@types/node": "^24.0.0"
+  },
+  "bin": {
+    "morndream-tools": "packages/cli/index.mjs",
+    "morndream-mcp": "packages/mcp/index.mjs"
+  }
+}

@@ -1,0 +1,1 @@
+{"input":{"type":"text","value":"SGVsbG8="},"recipe":[{"op":"From Base64","args":["A-Za-z0-9+/=",true,false]}]}

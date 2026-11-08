@@ -1,0 +1,2 @@
+import {executeQuick} from '../../packages/core/src/quick.js';
+self.onmessage=async({data})=>{const start=performance.now();try{const value=await executeQuick(data.id,data.input,data.params);self.postMessage({ok:true,data:{type:'text',value:String(value)},meta:{durationMs:Math.round(performance.now()-start)}});}catch(e){self.postMessage({ok:false,error:{code:'EXECUTION_ERROR',message:e.message}});}};

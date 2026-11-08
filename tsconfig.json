@@ -1,0 +1,1 @@
+{"compilerOptions":{"target":"ES2023","module":"ESNext","moduleResolution":"bundler","allowImportingTsExtensions":true,"allowJs":true,"checkJs":false,"strict":false,"noEmit":true,"skipLibCheck":true,"lib":["ES2023","DOM","DOM.Iterable"],"types":["node"]},"include":["packages/core/src/**/*.ts","packages/sdk/src/**/*.ts","apps/web/main.ts"]}
