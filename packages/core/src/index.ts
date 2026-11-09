@@ -1,4 +1,5 @@
 import Ajv from 'ajv';
+import {securityTools} from './security/catalog.js';
 import {quickTools} from './catalog.js';
 import {executeQuick} from './quick.js';
 import type {RunInput,RuntimeOptions,OperationResult} from './contracts.ts';
@@ -6,9 +7,10 @@ export type * from './contracts.ts';
 const canonical:Record<string,string>={json:'json.format',minify:'json.minify',jsoncsv:'json.to-csv',csvjson:'csv.to-json',base64:'encoding.base64',url:'encoding.url',hex:'encoding.hex',unicode:'encoding.unicode',hash:'crypto.hash',hmac:'crypto.hmac',uuid:'crypto.uuid',jwt:'jwt.decode',timestamp:'time.convert',regex:'text.regex',case:'text.case',dedupe:'text.unique',sort:'text.sort',stats:'text.stats',diff:'text.diff',urlparse:'url.parse'};
 const properties:Record<string,Record<string,unknown>>={json:{indent:{type:'integer',minimum:0,maximum:10,default:2},sort:{type:'boolean',default:false}},csvjson:{},hash:{algorithm:{enum:['SHA-1','SHA-256','SHA-512'],default:'SHA-256'}},hmac:{key:{type:'string',default:''}},timestamp:{unit:{enum:['seconds','milliseconds'],default:'seconds'}},regex:{pattern:{type:'string',default:''},flags:{type:'string',pattern:'^[dgimsuvy]*$',default:'g'},replacement:{type:'string',default:''}},case:{caseMode:{enum:['upper','lower','camel','snake'],default:'upper'}}};
 for(const id of ['base64','url','hex','unicode'])properties[id]={direction:{enum:['encode','decode'],default:'encode'}};
+for(const t of securityTools){canonical[t.id]=t.id;properties[t.id]=t.params;}
 const ajv=new Ajv({allErrors:true,useDefaults:true});
 const dataSchema={type:'object',properties:{type:{const:'text'},value:{type:'string'}},required:['type','value'],additionalProperties:false};
-export const catalog=quickTools.map(t=>({...t,id:canonical[t.id],legacyId:t.id,version:'1.0.0',runtimes:['browser','node'],effects:[],inputSchema:{type:'object',properties:{input:dataSchema,params:{type:'object',properties:properties[t.id]||{},additionalProperties:false,default:{}}},required:['input'],additionalProperties:false},outputSchema:{type:'object',properties:{type:{const:'text'},value:{type:'string'}},required:['type','value'],additionalProperties:false}}));
+export const catalog=[...quickTools,...securityTools].map(t=>({...t,id:canonical[t.id],legacyId:t.id,version:'1.0.0',runtimes:['browser','node'],effects:[],inputSchema:{type:'object',properties:{input:t.id.startsWith('security.')?{type:'object',properties:{type:{const:'text'},value:{type:'string'}},required:['type','value'],additionalProperties:false}:dataSchema,params:{type:'object',properties:properties[t.id]||{},additionalProperties:false,default:{}}},required:['input'],additionalProperties:false},outputSchema:{type:'object',properties:{type:{const:'text'},value:{type:'string'}},required:['type','value'],additionalProperties:false}}));
 const validators=new Map(catalog.map(t=>[t.id,ajv.compile(t.inputSchema)]));
 let toolExecutor:any;export function setToolExecutor(executor:any){toolExecutor=executor;}
 export const tools={

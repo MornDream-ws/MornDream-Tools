@@ -18,3 +18,10 @@ and build scripts are maintained outside the vendored source.
 
 Exact source revisions are recorded in upstream-sources.json.
 Third-party packages retain their respective licenses.
+
+Security workspace dependencies
+- jose: MIT, https://github.com/panva/jose
+- PKIjs and ASN1js: BSD-3-Clause, https://github.com/PeculiarVentures/PKI.js and https://github.com/PeculiarVentures/ASN1.js
+- CSP Evaluator: Apache-2.0, https://github.com/google/csp-evaluator
+- zxcvbn-ts core and dictionaries: MIT, https://github.com/zxcvbn-ts/zxcvbn
+License texts are distributed in licenses/security/.

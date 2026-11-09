@@ -17,3 +17,5 @@ export function sanitizeRequest(request:any):any;
 export function getJsonPath(value:unknown,path:string):unknown;
 
 export function setToolExecutor(executor:Function):void;
+
+export const security:{run(request:{toolId:string;input:DataValue;params?:Record<string,unknown>},options?:RuntimeOptions):Promise<{ok:true;data:Record<string,any>;meta:Record<string,unknown>}|{ok:false;error:{code:string;message:string}}>};

@@ -99,3 +99,5 @@ MCP 默认不允许网络。确需请求远端接口时，在 `args` 中添加 `
 主项目使用 [GPL-3.0](LICENSE)。工具组织参考 [IT-Tools](https://github.com/CorentinTh/it-tools)，原生配方功能固定使用指定的 [CyberChef-Chinese](https://github.com/shadowhunter1024/CyberChef-Chinese)，后者保留 Apache-2.0 许可证与源码署名。具体来源和版本见 [NOTICE](NOTICE) 与 [upstream-sources.json](upstream-sources.json)。
 
 当前工具箱实现已确认原型中的 20 项常用工具；IT-Tools 的其余工具尚未全部迁移。506 项操作已接入原生引擎与参数目录，自动化测试覆盖代表性配方及全部默认参数，未逐项验证每种操作的所有输入。上游更新流程见 [docs/MAINTENANCE.md](docs/MAINTENANCE.md)。
+
+安全工具区现提供响应头、CSP、JWT 签名与验签、PEM 证书链、口令强度及 Gitleaks / Nuclei / SARIF 报告分析。支持 API 响应转入、结果筛选导出、JSON 工具及配方联动。SDK `security.run`、CLI `security.run` 和 MCP `security_run` 共用实现。详见 [安全工具设计与调用](docs/SECURITY_WORKSPACE.md)。

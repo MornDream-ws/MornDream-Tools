@@ -11,3 +11,6 @@ vendor/cyberchef/src/node/index.mjs
 .env.*
 *.pem
 *.key
+
+!tests/fixtures/security-*.pem
+!apps/web/examples/security-certificate.pem
