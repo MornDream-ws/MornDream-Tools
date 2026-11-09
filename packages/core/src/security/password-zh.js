@@ -1,0 +1,5 @@
+export const passwordTranslations={
+ warnings:{straightRow:'连续的键盘按键容易被猜到。',keyPattern:'简短的键盘路径容易被猜到。',simpleRepeat:'重复字符容易被猜到。',extendedRepeat:'重复的字符组合容易被猜到。',sequences:'连续字符容易被猜到。',recentYears:'近期年份容易被猜到。',dates:'日期容易被猜到。',topTen:'这是极常见的口令。',topHundred:'这是非常常见的口令。',common:'这是常见口令。',similarToCommon:'该口令与常见口令相似。',wordByItself:'单个词语容易被猜到。',namesByThemselves:'单个姓名容易被猜到。',commonNames:'常见姓名容易被猜到。',userInputs:'避免使用姓名、用户名等关联信息。',pwned:'该口令曾出现在泄漏数据中。'},
+ suggestions:{l33t:'避免使用容易预测的字符替换。',reverseWords:'避免倒写常见词语。',allUppercase:'避免只通过全部大写增加复杂度。',capitalization:'不要只将首字母大写。',dates:'避免使用与你有关的日期和年份。',recentYears:'避免使用近期年份。',associatedYears:'避免使用与你有关的年份。',sequences:'避免使用连续字符。',repeated:'避免重复词语和字符。',longerKeyboardPattern:'避免使用简单的键盘路径。',anotherWord:'增加不常见的独立词语。',useWords:'使用多个独立词语，避免常见短语。',noNeed:'足够长的独立词语组合也能形成强口令。',pwned:'请更换在其他地方重复使用的口令。'},
+ timeEstimation:{ltSecond:'不到 1 秒',second:'{base} 秒',seconds:'{base} 秒',minute:'{base} 分钟',minutes:'{base} 分钟',hour:'{base} 小时',hours:'{base} 小时',day:'{base} 天',days:'{base} 天',month:'{base} 个月',months:'{base} 个月',year:'{base} 年',years:'{base} 年',centuries:'数百年'}
+};

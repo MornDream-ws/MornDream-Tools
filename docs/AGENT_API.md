@@ -101,3 +101,7 @@ node packages/cli/index.mjs recipes.operations --input examples/search.json
 MCP 提供 `tools_search`、`tools_describe`、`tools_run`、`recipes_operations`、`recipes_validate`、`recipes_run`、`http_prepare`、`http_send`、`workspace_import`、`workspace_export`。所有调用返回结构化结果。开启网络需要服务启动参数 `--allow-network`。
 
 静态目录提供 `api/v1/catalog.json`，用于读取工具和操作目录。该路径是静态元数据文件，不是远程执行接口。
+
+## 安全分析
+
+调用 `tools.search({query:'security.'})` 获取六项安全工具，使用 `tools.describe(toolId)` 获取参数。`security.run` 接收与 `tools.run` 相同的请求，返回结构化 JSON 对象；CLI 命令 `security.run`，MCP 工具 `security_run`。详细契约和数据处理方式见 [安全工具工作区](SECURITY_WORKSPACE.md)。
