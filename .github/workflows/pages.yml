@@ -16,16 +16,16 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Import initial source bundle
-        if: github.event_name != 'pull_request' && hashFiles('MornDream-Tools-source.zip') != ''
+      - name: Import reviewed update bundle
+        if: github.event_name != 'pull_request' && hashFiles('MornDream-Tools-update.zip') != ''
         run: |
-          echo "08f05000719f2121d5049ebac9b72b3690ac48756ab8c824d079fc75c87582ca  MornDream-Tools-source.zip" | sha256sum --check
-          unzip -o MornDream-Tools-source.zip
-          rm MornDream-Tools-source.zip
+          echo "1135e2f19d819cdc3d8e79a07aaa0fc684b489b10381ae3fb2ebd6e76c03bff9  MornDream-Tools-update.zip" | sha256sum --check
+          unzip -o MornDream-Tools-update.zip
+          rm MornDream-Tools-update.zip
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m 'Import complete MornDream-Tools source'
+          git commit -m 'Add security workspace and Agent interfaces'
           git push
   build:
     needs: import-source
