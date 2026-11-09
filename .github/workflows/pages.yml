@@ -17,15 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Import reviewed update bundle
-        if: github.event_name != 'pull_request' && hashFiles('MornDream-Tools-update.zip') != ''
+        if: github.event_name != 'pull_request' && hashFiles('MornDream-Tools-polish.zip') != ''
         run: |
-          echo "1135e2f19d819cdc3d8e79a07aaa0fc684b489b10381ae3fb2ebd6e76c03bff9  MornDream-Tools-update.zip" | sha256sum --check
-          unzip -o MornDream-Tools-update.zip
-          rm MornDream-Tools-update.zip
+          echo "351738827b2cbd1646b31c33535418b2be8cde450bdb91dfb3a997c0f0b3c72d  MornDream-Tools-polish.zip" | sha256sum --check
+          unzip -o MornDream-Tools-polish.zip
+          rm MornDream-Tools-polish.zip
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m 'Add security workspace and Agent interfaces'
+          git commit -m 'Polish Chinese security workspace'
           git push
   build:
     needs: import-source
