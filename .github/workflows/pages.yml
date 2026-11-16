@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   import-source:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
@@ -29,7 +29,7 @@ jobs:
           git push
   build:
     needs: import-source
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
@@ -43,6 +43,14 @@ jobs:
             package-lock.json
             vendor/cyberchef/package-lock.json
       - run: npm ci --no-audit --no-fund
+      - uses: actions/cache@v4
+        with:
+          path: |
+            vendor/cyberchef/build
+            vendor/cyberchef/src/core/config
+            vendor/cyberchef/src/core/lib/HTMLEntities.mjs
+            vendor/cyberchef/src/node/index.mjs
+          key: chef-${{ runner.os }}-${{ hashFiles('upstream-sources.json', 'vendor/cyberchef/package-lock.json', 'scripts/build-chef-worker.cjs') }}
       - run: npm run build
       - run: npm run typecheck
       - run: npm test
@@ -63,7 +71,7 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write
