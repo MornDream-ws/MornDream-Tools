@@ -17,15 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Import reviewed update bundle
-        if: github.event_name != 'pull_request' && hashFiles('MornDream-Tools-polish.zip') != ''
+        if: github.event_name != 'pull_request' && hashFiles('MornDream-Tools-images.zip') != ''
         run: |
-          echo "351738827b2cbd1646b31c33535418b2be8cde450bdb91dfb3a997c0f0b3c72d  MornDream-Tools-polish.zip" | sha256sum --check
-          unzip -o MornDream-Tools-polish.zip
-          rm MornDream-Tools-polish.zip
+          echo "e5e6b3be642f7040193b55b5c9e0facb5c450e2d7eb3768d655a1f45b1e9a5e3  MornDream-Tools-images.zip" | sha256sum --check
+          unzip -o MornDream-Tools-images.zip
+          rm MornDream-Tools-images.zip
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m 'Polish Chinese security workspace'
+          git commit -m 'Implement 19 image tools with checklist spec'
           git push
   build:
     needs: import-source
@@ -46,6 +46,16 @@ jobs:
       - run: npm run build
       - run: npm run typecheck
       - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - name: Verify image tools in Chromium
+        run: |
+          export CHROMIUM_PATH="$(node --input-type=module -e "import {chromium} from '@playwright/test'; console.log(chromium.executablePath())")"
+          IMAGE_AI_TEST=1 npm run test:images
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: image-tool-verification
+          path: artifacts/images
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
