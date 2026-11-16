@@ -76,6 +76,8 @@ A → B/D 共用基础 → I01/I04/I05/I06/I08/I09/I14/I15/I17/I19 → I02/I07/I
 实际验证结果、命令和剩余项在此按清单编号填写。
 
 - 已核实直接依赖：gifenc 1.0.3、gifuct-js 2.1.2、pdf-lib 1.17.1、exifr 7.1.3、html-to-image 1.11.13、fflate 0.8.3、onnxruntime-web 1.24.2、@vladmandic/face-api 1.7.15，均为 MIT；face-api 内嵌 TensorFlow.js 使用 Apache-2.0。许可证与第三方声明位于 licenses/images。
-- BiRefNet_lite-ONNX 固定模型提交 de15b22ba131738a16dff04aab8bdf8dc32e3ac1，模型卡标注 MIT；TinyFaceDetector 权重来自锁定的 face-api npm 包，MIT。
+- U2NetP 固定模型提交 25dee37ab19c5b6ad64ba6578eba63f1ae07720c，Apache-2.0，4,574,861 字节；SHA-256 309c8469258dda742793dce0ebea8e6dd393174f89934733ecc8b14c76f4ddd8，与上游 rembg 发布文件一致；TinyFaceDetector 权重来自锁定的 face-api npm 包，MIT。
 - 本地 npm run build、npm run typecheck、npm test 通过，共 53 项单元测试。
 - 浏览器输出级验收脚本：scripts/test-images-browser.mjs，涵盖像素、尺寸、GIF 帧数、PDF 页数、ICO 包、HTML 脚本隔离、人脸检测、手机布局。当前执行环境的 Chromium 被系统套接字权限阻止，改由 CI 执行；通过前不勾选对应工具验收。
+
+- 第三轮浏览器验收通过 HTML 导出、人脸自动检测和批量 ZIP；BiRefNet 在浏览器触发内存分配错误，改用 U2NetP，重新执行实际抠图验收。键盘处理补上重复 change 事件过滤，待回归确认。
