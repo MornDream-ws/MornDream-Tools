@@ -14,3 +14,8 @@ vendor/cyberchef/src/node/index.mjs
 
 !tests/fixtures/security-*.pem
 !apps/web/examples/security-certificate.pem
+
+apps/web/public/image-runtime/
+apps/web/public/image-models/
+playwright-report/
+test-results/

@@ -5,7 +5,7 @@ const run=(command,args,cwd=process.cwd())=>{const result=spawnSync(command,args
 if(!existsSync('vendor/cyberchef/node_modules'))run('npm',['ci','--no-audit','--no-fund'],'vendor/cyberchef');
 if(!existsSync('vendor/cyberchef/build/prod/index.html'))run('npm',['run','build'],'vendor/cyberchef');
 if(!existsSync('vendor/cyberchef/build/runtime/ChefWorker.js'))run('node',['scripts/build-chef-worker.cjs']);
-run('node',['scripts/build-sdk.mjs']);run('npm',['run','build:web']);
+run('node',['scripts/prepare-images.mjs']);run('node',['scripts/build-sdk.mjs']);run('npm',['run','build:web']);
 await mkdir('dist/cyberchef',{recursive:true});
 await cp('vendor/cyberchef/build/prod','dist/cyberchef',{recursive:true,filter:source=>!/(\.gz|\.br|\.zip)$|BundleAnalyzerReport/.test(source)});
 await cp('vendor/cyberchef/build/runtime','dist/cyberchef',{recursive:true,filter:source=>!/(\.gz|\.br)$/.test(source)});
