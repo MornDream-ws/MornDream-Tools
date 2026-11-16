@@ -8,7 +8,7 @@ const format=choice('输出格式','image/png',[['image/png','PNG'],['image/jpeg
 export const imageTools=[
  {id:'compress',name:'图片压缩',group:'优化与尺寸',desc:'调整质量和尺寸，比较前后体积',fields:{format:{...format,value:'image/jpeg'},quality,maxEdge:number('最大边（0 保持原尺寸）',0,0,16000)}},
  {id:'upscale',name:'图片放大',group:'优化与尺寸',desc:'重采样放大与锐化，不生成不存在的细节',fields:{scale:choice('放大倍率',2,[[2,'2×'],[3,'3×'],[4,'4×']]),sharpen:number('锐化强度',30,0,100)}},
- {id:'background',name:'背景移除',group:'优化与尺寸',desc:'BiRefNet 本地 AI 抠图，首次下载约 224 MB 模型',ai:true,fields:{transparent:check('透明背景',true),background:color('填充背景色')}},
+ {id:'background',name:'背景移除',group:'优化与尺寸',desc:'U2NetP 本地 AI 抠图，首次下载约 4.6 MB 模型',ai:true,fields:{transparent:check('透明背景',true),background:color('填充背景色')}},
  {id:'resize',name:'修改尺寸',group:'优化与尺寸',desc:'按像素或百分比缩放，支持比例锁定',fields:{resizeMode:choice('缩放方式','pixels',[['pixels','指定像素'],['percent','百分比']]),width:number('宽度（像素）',800,1,16000),height:number('高度（像素）',600,1,16000),lock:check('按宽度保持比例',true),percent:number('缩放百分比',50,1,400)}},
  {id:'crop',name:'图片裁剪',group:'基础编辑',desc:'在预览上拖动框选，或填写精确坐标',single:true,fields:{ratio:choice('裁剪比例','free',[['free','自由'],['1','1:1'],['1.7777778','16:9'],['0.75','3:4']]),x:number('左侧 X',0,0,16000),y:number('顶部 Y',0,0,16000),width:number('裁剪宽度',400,1,16000),height:number('裁剪高度',300,1,16000)}},
  {id:'rotate',name:'旋转与翻转',group:'基础编辑',desc:'任意角度旋转，自动扩展画布',fields:{angle:number('旋转角度',90,-360,360),flipX:check('水平翻转'),flipY:check('垂直翻转')}},
