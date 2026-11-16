@@ -44,6 +44,7 @@ jobs:
             vendor/cyberchef/package-lock.json
       - run: npm ci --no-audit --no-fund
       - uses: actions/cache@v4
+        id: chef-cache
         with:
           path: |
             vendor/cyberchef/build
@@ -52,6 +53,15 @@ jobs:
             vendor/cyberchef/src/node/index.mjs
           key: chef-${{ runner.os }}-${{ hashFiles('upstream-sources.json', 'vendor/cyberchef/package-lock.json', 'scripts/build-chef-worker.cjs') }}
       - run: npm run build
+      - uses: actions/cache/save@v4
+        if: steps.chef-cache.outputs.cache-hit != 'true'
+        with:
+          path: |
+            vendor/cyberchef/build
+            vendor/cyberchef/src/core/config
+            vendor/cyberchef/src/core/lib/HTMLEntities.mjs
+            vendor/cyberchef/src/node/index.mjs
+          key: ${{ steps.chef-cache.outputs.cache-primary-key }}
       - run: npm run typecheck
       - run: npm test
       - run: npx playwright install --with-deps chromium
