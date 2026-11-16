@@ -31,7 +31,7 @@ label:has(>input[type=checkbox]),label:has(>input[type=radio]) { cursor:pointer;
 .search-trigger { width:clamp(150px,22vw,310px); min-width:0; }
 .search-trigger span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .top-actions { flex:none; gap:4px; }
-.shell { height:calc(100dvh - var(--header-height)); min-height:0; isolation:isolate; }
+.shell { height:calc(100dvh - var(--header-height)); min-height:0; isolation:auto; }
 .sidebar { width:var(--sidebar-width); padding:20px 12px; overscroll-behavior:contain; scrollbar-gutter:stable; }
 .navitem,.subtools button,.operation,.api-saved,.saved-item { border-radius:8px; }
 .navitem.active { box-shadow:inset 2px 0 var(--accent); }
