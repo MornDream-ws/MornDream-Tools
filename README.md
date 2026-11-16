@@ -103,6 +103,6 @@ MCP 默认不允许网络。确需请求远端接口时，在 `args` 中添加 `
 安全工具区现提供响应头、CSP、JWT 签名与验签、PEM 证书链、口令强度及 Gitleaks / Nuclei / SARIF 报告分析。支持 API 响应转入、结果筛选导出、JSON 工具及配方联动。SDK `security.run`、CLI `security.run` 和 MCP `security_run` 共用实现。详见 [安全工具设计与调用](docs/SECURITY_WORKSPACE.md)。
 
 
-图片工具工作区包含 19 项独立工具，采用本地 Canvas、Worker、开源编码器及本地模型。输入不进入工作区备份；动画输入在静态处理前需要确认提取首帧。AI 抠图首次下载约 224 MB 模型；人脸检测权重随站点发布。使用方法见 [图片工作区说明](docs/IMAGE_WORKSPACE.md)，实现与验收状态见 [图片工具 checklist spec](docs/specs/IMAGE_TOOLS_CHECKLIST.md)。
+图片工具工作区包含 19 项独立工具，采用本地 Canvas、Worker、开源编码器及本地模型。输入不进入工作区备份；动画输入在静态处理前需要确认提取首帧。AI 抠图首次下载约 4.6 MB 模型；人脸检测权重随站点发布。使用方法见 [图片工作区说明](docs/IMAGE_WORKSPACE.md)，实现与验收状态见 [图片工具 checklist spec](docs/specs/IMAGE_TOOLS_CHECKLIST.md)。
 
 图片导出浏览器验收：构建后执行 `npm run test:images`，使用本机 Chromium；可通过 `CHROMIUM_PATH` 指定路径。`IMAGE_AI_TEST=1` 额外执行实际抠图推理，需要联网下载模型。
