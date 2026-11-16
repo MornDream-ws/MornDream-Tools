@@ -46,10 +46,12 @@ export function syncInterface() {
   }
   const main = document.querySelector('.shell > main, .shell > .recipe-main');
   const view = document.querySelector('.mode-switch .active')?.textContent + ':' + main?.querySelector('h1')?.textContent;
-  if (main && view !== previousView && !reducedMotion.matches) {
+  const sameView = view === previousView;
+  if (main && !sameView && !reducedMotion.matches) {
     main.animate([{opacity: .55, transform: 'translateY(5px)'}, {opacity: 1, transform: 'translateY(0)'}], {duration: 170, easing: 'cubic-bezier(.2,.7,.2,1)'});
   }
   previousView = view;
+  return sameView;
 }
 
 document.addEventListener('click', event => {
