@@ -30,6 +30,26 @@ try{await page.goto(`http://127.0.0.1:${server.address().port}/`);await page.get
  await open('background');await page.locator('[data-action="im-run"]').click();await page.locator('[data-action="im-cancel"]').click();await page.waitForTimeout(1000);assert.match(await page.locator('.im-status').innerText(),/已取消/);assert.equal(await page.locator('[data-action="im-cancel"]').count(),0);record({id:'cancel-worker',status:'passed'});
  await open('crop');await set('width',16000);await run(60000,true);assert.match(await page.locator('.im-file.active').innerText(),/超出原图/);await page.locator('[data-action="im-reset"]').click();await run();assert.equal((await inspect(await save('recovered.png'))).width,96);record({id:'processing-error-recovery',status:'passed'});
  const cleanPage=await page.context().newPage();await cleanPage.goto(`http://127.0.0.1:${server.address().port}/`);await cleanPage.getByRole('button',{name:'图片工具',exact:true}).click();assert.equal(await cleanPage.locator('.im-file').count(),0);await cleanPage.close();record({id:'memory-only-inputs',status:'passed'});
+
+ const layoutResults=[];
+ for(const width of [360,390,768,1024,1440,1920]){
+  await page.setViewportSize({width,height:900});
+  for(const mode of ['快捷工具','配方工作台','图片工具','安全工具','API 调试台']){
+   await page.getByRole('button',{name:mode,exact:true}).click();
+   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`page overflow: ${mode} ${width}`);
+   const box=await page.locator('.shell').boundingBox();assert.ok(box.width<=width+1);
+   const header=await page.locator('.topbar').boundingBox();assert.ok(header.width<=width+1);
+   for(const button of await page.locator('.mode-switch button').all()){const bounds=await button.boundingBox();assert.ok(bounds.x>=0&&bounds.x+bounds.width<=width+1,`hidden mode: ${mode} ${width}`);}
+   layoutResults.push({width,mode});
+  }
+ }
+ await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'图片工具',exact:true}).click();
+ await page.locator('[data-action="menu"]').click();assert.equal(await page.locator('[data-action="menu"]').getAttribute('aria-expanded'),'true');
+ await page.keyboard.press('Escape');assert.equal(await page.locator('[data-action="menu"]').getAttribute('aria-expanded'),'false');
+ await page.locator('[data-action="menu"]').click();await page.getByRole('button',{name:'关闭工具导航',exact:true}).click();assert.equal(await page.locator('[data-action="menu"]').getAttribute('aria-expanded'),'false');
+ assert.equal(await page.locator('.brand').innerText(),'MDTools');assert.ok(await page.locator('.brand-logo').evaluate(e=>e.complete&&e.naturalWidth>0));assert.match(await page.title(),/MDTools/);
+ await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.mode-switch button').first().evaluate(e=>getComputedStyle(e).transitionDuration),'0s');await page.emulateMedia({reducedMotion:'no-preference'});
+ await writeFile('artifacts/images/responsive-results.json',JSON.stringify(layoutResults,null,2));record({id:'responsive-brand-navigation',status:'passed',scenarios:layoutResults.length});
  await page.setViewportSize({width:390,height:844});await page.locator('[data-action="menu"]').click();await open('resize');assert.ok(await page.locator('.im-params').isVisible());assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2));await page.screenshot({path:'artifacts/images/mobile.png'});await page.setViewportSize({width:1440,height:1000});await page.screenshot({path:'artifacts/images/desktop.png'});
  assert.deepEqual(records.filter(r=>r.status!=='passed'),[]);assert.deepEqual(errors,[],errors.join('\n'));await writeFile('artifacts/images/browser-results.json',JSON.stringify(records,null,2));console.log(JSON.stringify({passed:records.length,records},null,2));
 }catch(error){console.error('Image browser verification failed after:',records.map(r=>r.id).join(', '));console.error('Visible status:',await page.locator('.im-status').innerText().catch(()=>''));console.error('Toast:',await page.locator('#toast').innerText().catch(()=>''));console.error('Page errors:',errors);await page.screenshot({path:'artifacts/images/failure.png',fullPage:true}).catch(()=>{});await writeFile('artifacts/images/browser-results.json',JSON.stringify(records,null,2));throw error;}finally{await browser.close();await new Promise(r=>server.close(r));}
