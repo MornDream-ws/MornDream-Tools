@@ -96,7 +96,7 @@ dialog::backdrop { animation:backdrop-enter .18s var(--ease); }
   .topbar{padding-left:10px;padding-right:10px;column-gap:4px}.top-actions button{width:32px}.mode-switch button{font-size:11px}
   input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px!important}button{min-height:40px}
   .toolbar{gap:10px;align-items:flex-end}.toolbar label{flex-wrap:wrap}.toolbar input,.toolbar select{max-width:100%}.toolbar label:has(input[type=checkbox]){align-self:center;min-height:40px}
-  .editor-grid{min-height:0;gap:14px}.editor-grid .editor{height:clamp(280px,42dvh,440px);flex:none}.editor textarea,.editor pre{font-size:13px!important;line-height:1.75}
+  .editor-grid{min-height:0;gap:14px}.editor-grid .editor{height:clamp(280px,42dvh,440px);flex:none}.editor textarea,.editor pre{font-size:13px!important;line-height:1.75}.editor textarea{font-size:16px!important}
   .editor-head .actions{gap:1px}.editor-head button{padding:7px}.title-row{flex-wrap:wrap}.title-row h1{font-size:23px}
   .recipe-body{display:flex}.recipe-header .actions{justify-content:flex-start;gap:5px}.recipe-header button{min-height:38px}.recipe-editors{padding:14px}.steps-pane{padding:14px}.recipe-body[data-tab=input] .input-editor,.recipe-body[data-tab=output] .output-editor{height:max(340px,55dvh)}
   .mobile-tabs{padding:6px 14px 0}.mobile-tabs button{min-height:44px}.step-head{flex-wrap:wrap}.step-controls{flex:none}.step-name{flex:1}
